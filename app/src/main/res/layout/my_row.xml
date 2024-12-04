@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/update_main">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -49,6 +50,24 @@
                 app:layout_constraintStart_toStartOf="@+id/title_text"
                 app:layout_constraintTop_toBottomOf="@+id/title_text"
                 tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/password_text"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text=""
+                app:layout_constraintEnd_toStartOf="@+id/username_text"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/_id_txt"
+                app:layout_constraintTop_toBottomOf="@+id/_id_txt" />
+
+            <TextView
+                android:id="@+id/url_text"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="@+id/_id_txt"
+                app:layout_constraintTop_toTopOf="@+id/_id_txt" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
