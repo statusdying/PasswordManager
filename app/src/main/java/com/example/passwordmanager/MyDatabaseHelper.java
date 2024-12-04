@@ -23,7 +23,7 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_URL = "url";
 
 
-    public MyDatabaseHelper(@Nullable Context context) {
+    MyDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
@@ -71,4 +71,22 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
-}
+
+    void updateData(String row_id, String title, String username, String password, String url){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_TITLE, title);
+        cv.put(COLUMN_USERNAME, username);
+        cv.put(COLUMN_PASSWORD, password);
+        cv.put(COLUMN_URL, url);
+
+        long result = db.update(TABLE_NAME, cv, "_id=?", new String[]{row_id});
+        if (result == -1){
+            Toast.makeText(context, "Failed to update", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context, "Successfully updated",Toast.LENGTH_SHORT).show();
+        }
+
+
+        }
+    }

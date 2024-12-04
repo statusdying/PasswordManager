@@ -30,13 +30,20 @@ public class Update_Activity extends AppCompatActivity {
         password_input = findViewById(R.id.update_password_input);
         url_input = findViewById(R.id.update_url_input);
         update_button = findViewById(R.id.update_button);
+        getAndSetIntentData();
         update_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                MyDatabaseHelper myDB = new MyDatabaseHelper(Update_Activity.this);
+                title = title_input.getText().toString().trim();
+                username = username_input.getText().toString().trim();
+                password = password_input.getText().toString().trim();
+                url = url_input.getText().toString().trim();
+                myDB.updateData(id, title, username, password, url);
             }
         });
-        getAndSetIntentData();
+
+
     }
 
     void getAndSetIntentData(){

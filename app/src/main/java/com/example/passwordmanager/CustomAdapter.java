@@ -1,6 +1,7 @@
 package com.example.passwordmanager;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -18,9 +19,11 @@ import java.util.ArrayList;
 public class CustomAdapter  extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     private Context context;
+    Activity activity;
     private ArrayList _id, title, username, password, url;
 
-    CustomAdapter(Context context, ArrayList _id, ArrayList title, ArrayList username, ArrayList password, ArrayList url){
+    CustomAdapter(Activity activity, Context context, ArrayList _id, ArrayList title, ArrayList username, ArrayList password, ArrayList url){
+        this.activity = activity;
         this.context = context;
         this._id = _id;
         this.title = title;
@@ -55,7 +58,8 @@ public class CustomAdapter  extends RecyclerView.Adapter<CustomAdapter.MyViewHol
                 intent.putExtra("username", String.valueOf(username.get(position)));
                 intent.putExtra("password", String.valueOf(password.get(position)));
                 intent.putExtra("url", String.valueOf(url.get(position)));
-                context.startActivity(intent);
+                activity.startActivityForResult(intent,1);
+
             }
         });
 
