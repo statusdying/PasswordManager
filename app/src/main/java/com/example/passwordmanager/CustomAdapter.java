@@ -44,8 +44,8 @@ public class CustomAdapter  extends RecyclerView.Adapter<CustomAdapter.MyViewHol
         holder._id_text.setText(String.valueOf(_id.get(position)));
         holder.title_text.setText(String.valueOf(title.get(position)));
         holder.username_text.setText(String.valueOf(username.get(position)));
-        holder.password_text.setText(String.valueOf(password.get(position)));
-        holder.url_text.setText(String.valueOf(url.get(position)));
+        //holder.password_text.setText(String.valueOf(password.get(position)));
+        //holder.url_text.setText(String.valueOf(url.get(position)));
         holder.update_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
