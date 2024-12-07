@@ -1,5 +1,6 @@
 package com.example.passwordmanager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     FloatingActionButton add_button;
 
+    Activity activity;
     MyDatabaseHelper myDB;
     ArrayList<String> _id, title, username, password, url;
     CustomAdapter customAdapter;
@@ -40,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                //activity.startActivityForResult(intent,1);
                 startActivity(intent);
+
             }
         });
 
@@ -56,16 +60,13 @@ public class MainActivity extends AppCompatActivity {
         customAdapter = new CustomAdapter(MainActivity.this,this,_id, title, username, password, url);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //Toast.makeText(this, "OnActivityResult", Toast.LENGTH_SHORT).show();
         if(requestCode == 1){
             recreate();
         }

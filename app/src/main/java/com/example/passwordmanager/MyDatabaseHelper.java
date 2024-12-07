@@ -1,5 +1,7 @@
 package com.example.passwordmanager;
 
+import static androidx.core.app.ActivityCompat.recreate;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

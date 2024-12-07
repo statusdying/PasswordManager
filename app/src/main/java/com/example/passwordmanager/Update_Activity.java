@@ -62,7 +62,6 @@ public class Update_Activity extends AppCompatActivity {
                 ClipData clip = ClipData.newPlainText("text", username_input.getText().toString());
                 clipboard.setPrimaryClip(clip);
 
-                // Optional: Display a toast message to confirm the copy
                 Toast.makeText(Update_Activity.this, "Username copied to clipboard", Toast.LENGTH_SHORT).show();
             }
         });
@@ -74,7 +73,6 @@ public class Update_Activity extends AppCompatActivity {
                 ClipData clip = ClipData.newPlainText("text", password_input.getText().toString());
                 clipboard.setPrimaryClip(clip);
 
-                // Optional: Display a toast message to confirm the copy
                 Toast.makeText(Update_Activity.this, "Password copied to clipboard", Toast.LENGTH_SHORT).show();
             }
         });
