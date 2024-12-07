@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -62,6 +63,9 @@ public class AddActivity extends AppCompatActivity {
 
         });
 
+        SharedViewModel viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        String myVariable = viewModel.getMyVariable();
+
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,8 +76,12 @@ public class AddActivity extends AppCompatActivity {
                         url_input.getText().toString().trim());
                 Intent intent = new Intent(AddActivity.this, MainActivity.class);
                         //finish();
+                intent.putExtra("loggedIn", "loggedIn");
+                //viewModel.setMyVariable("third");
                 startActivity(intent);
+                //viewModel.setMyVariable("forth");
                 recreate();
+                //viewModel.setMyVariable("fifth");
 
             }
         });

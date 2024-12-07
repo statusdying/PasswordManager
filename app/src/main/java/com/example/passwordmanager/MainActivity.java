@@ -4,31 +4,45 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    FloatingActionButton add_button;
+    FloatingActionButton add_button, authenticate_button;
 
     Activity activity;
     MyDatabaseHelper myDB;
     ArrayList<String> _id, title, username, password, url;
     CustomAdapter customAdapter;
+
+    private Executor executor;
+
+    private androidx.biometric.BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
+
+    Boolean firstLogIn = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +50,85 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+
+
+
+
+        authenticate_button = findViewById(R.id.authenticate_button);
         recyclerView = findViewById(R.id.recyclerView);
         add_button = findViewById(R.id.add_button);
+        executor = ContextCompat.getMainExecutor(this);
+        String mySecondVariable = "loggedOut";
+
+        SharedViewModel viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        String myVariable = viewModel.getMyVariable();
+
+        if(getIntent().getStringExtra("loggedIn") != null)
+        {
+            mySecondVariable = getIntent().getStringExtra("loggedIn");
+            Toast.makeText(this, mySecondVariable, Toast.LENGTH_SHORT).show();
+        }
+        //String mySecondVariable = getIntent().getStringExtra("loggedIn");
+
+
+        //Toast.makeText(this, myVariable, Toast.LENGTH_SHORT).show();
+            if(myVariable == "first_state" && mySecondVariable == "loggedOut"){
+                loggedOut();
+                //Toast.makeText(this, firstLogIn.toString(), Toast.LENGTH_SHORT).show();
+
+            }else{loggedIn();}
+
+
+
+
+
+        biometricPrompt = new androidx.biometric.BiometricPrompt(MainActivity.this, executor, new androidx.biometric.BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(MainActivity.this, "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull androidx.biometric.BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(MainActivity.this, "Authentication successful", Toast.LENGTH_SHORT).show();
+                firstLogIn = true;
+                viewModel.setMyVariable("second");
+                loggedIn();
+
+
+
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(MainActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        promptInfo = new androidx.biometric.BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Biometric Authentication")
+                .setSubtitle("Login using fingerprint or face")
+                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                                .build();
+
+
+
+        authenticate_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                biometricPrompt.authenticate(promptInfo);
+                //Intent intent = new Intent(MainActivity.this, FingerprintActivity.class);
+                //startActivity(intent);
+            }
+        });
+
+
+
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,5 +179,45 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    void loggedIn(){
+        add_button.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+        authenticate_button.setVisibility(View.INVISIBLE);
+
+    }
+
+    void loggedOut(){
+        recyclerView.setVisibility(View.INVISIBLE);
+        add_button.setVisibility(View.INVISIBLE);
+        authenticate_button.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(15 * 60 * 1000); // 10 minutes in milliseconds
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                // Use a Handler to post the action to the main thread
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Perform your action here on the main thread
+                        // e.g., update UI, show a notification
+                        loggedOut();
+                        //Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).start();
     }
 }

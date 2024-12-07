@@ -20,6 +20,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/add_icon" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/authenticate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_button"
+        app:srcCompat="@drawable/fingerprint_dialog_fp_icon"
+        tools:ignore="SpeakableTextPresentCheck" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="409dp"
