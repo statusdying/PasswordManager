@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,8 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private androidx.biometric.BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
 
-    Boolean firstLogIn = false;
+    Boolean firstLogIn;
 
+    boolean loggedOutDueInactivity = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         executor = ContextCompat.getMainExecutor(this);
         String mySecondVariable = "loggedOut";
 
+
         SharedViewModel viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         String myVariable = viewModel.getMyVariable();
 
@@ -74,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         //String mySecondVariable = getIntent().getStringExtra("loggedIn");
 
 
-        //Toast.makeText(this, myVariable, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, myVariable+mySecondVariable, Toast.LENGTH_SHORT).show();
             if(myVariable == "first_state" && mySecondVariable == "loggedOut"){
                 loggedOut();
                 //Toast.makeText(this, firstLogIn.toString(), Toast.LENGTH_SHORT).show();
@@ -203,11 +207,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(15 * 60 * 1000); // 10 minutes in milliseconds
+                    Thread.sleep(1 * 60 * 1000); // 10 minutes in milliseconds
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -218,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         // Perform your action here on the main thread
                         // e.g., update UI, show a notification
+                        loggedOutDueInactivity = true;
                         loggedOut();
                         //Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
                     }
@@ -225,4 +231,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
     }
+
+
+
 }
