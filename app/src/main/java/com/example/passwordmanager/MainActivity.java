@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     FloatingActionButton add_button, authenticate_button;
 
+    TextView login_text;
+
     Activity activity;
     MyDatabaseHelper myDB;
     ArrayList<String> _id, title, username, password, url;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         authenticate_button = findViewById(R.id.authenticate_button);
         recyclerView = findViewById(R.id.recyclerView);
         add_button = findViewById(R.id.add_button);
+        login_text = findViewById(R.id.login_text);
         executor = ContextCompat.getMainExecutor(this);
         String mySecondVariable = "loggedOut";
 
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         if(getIntent().getStringExtra("loggedIn") != null)
         {
             mySecondVariable = getIntent().getStringExtra("loggedIn");
-            Toast.makeText(this, mySecondVariable, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, mySecondVariable, Toast.LENGTH_SHORT).show();
         }
         //String mySecondVariable = getIntent().getStringExtra("loggedIn");
 
@@ -185,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         add_button.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
         authenticate_button.setVisibility(View.INVISIBLE);
+        login_text.setVisibility(View.INVISIBLE);
 
     }
 
@@ -192,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setVisibility(View.INVISIBLE);
         add_button.setVisibility(View.INVISIBLE);
         authenticate_button.setVisibility(View.VISIBLE);
+        login_text.setVisibility(View.VISIBLE);
 
     }
 
