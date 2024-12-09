@@ -40,7 +40,7 @@ public class AddActivity extends AppCompatActivity {
         generate_password = findViewById(R.id.gen_password);
         reveal_button = findViewById(R.id.reveal_button);
 
-        //title_input.setText("Helelo");
+
         generatedPassword = generatePassword(12);
 
         generate_password.setOnClickListener(new View.OnClickListener() {

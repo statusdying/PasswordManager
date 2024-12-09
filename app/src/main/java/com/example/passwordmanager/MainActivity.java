@@ -64,22 +64,22 @@ public class MainActivity extends AppCompatActivity {
         add_button = findViewById(R.id.add_button);
         login_text = findViewById(R.id.login_text);
         executor = ContextCompat.getMainExecutor(this);
-        String mySecondVariable = "loggedOut";
+        String loginState = "loggedOut";
 
 
         SharedViewModel viewModel = new ViewModelProvider(this).get(SharedViewModel.class);
-        String myVariable = viewModel.getMyVariable();
+        String loginState1 = viewModel.getMyVariable();
 
         if(getIntent().getStringExtra("loggedIn") != null)
         {
-            mySecondVariable = getIntent().getStringExtra("loggedIn");
+            loginState = getIntent().getStringExtra("loggedIn");
             //Toast.makeText(this, mySecondVariable, Toast.LENGTH_SHORT).show();
         }
         //String mySecondVariable = getIntent().getStringExtra("loggedIn");
 
 
         //Toast.makeText(this, myVariable+mySecondVariable, Toast.LENGTH_SHORT).show();
-            if(myVariable == "first_state" && mySecondVariable == "loggedOut"){
+            if(loginState1 == "first_state" && loginState == "loggedOut"){
                 loggedOut();
                 //Toast.makeText(this, firstLogIn.toString(), Toast.LENGTH_SHORT).show();
 
